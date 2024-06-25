@@ -1,12 +1,26 @@
 import LSM
 from sklearn.neural_network import MLPClassifier
-from gensim.test.utils import datapath, get_tmpfile
-from gensim.models import KeyedVectors
-from gensim.scripts.glove2word2vec import glove2word2vec
+from embedding import *
+from keras.models import Sequential
+from keras.src.layers.core import *
+from keras.optimizers import SGD
+import keras
+import numpy as np
+import matplotlib.pyplot as plt
 
-glove_file = datapath('test_glove.txt')
-tmp_file = get_tmpfile("test_word2vec.txt")
+a = "hello world hey"
+model = keras.Sequential()
+model.add(keras.Input(shape=(50,50)))
+model.add(keras.layers.Dense(8))
 
-_ = glove2word2vec(glove_file, tmp_file)
+model.compile(optimizer = SGD(), loss = 'mse')
 
-model = KeyedVectors.load_word2vec_format(tmp_file)
+# classifier = MLPClassifier(hidden_layer_sizes=(64,64),activation='relu',solver='adam',max_iter=3,verbose=True,)
+
+model = LSM.LSM(modl=model)
+
+model.load_embeddings("./embeddings/glove.6B.50d.txt",50)
+# tex = "are you ok cause you are the one who needed space now finally i am doing fine you would rather see me cry"
+model.train(text=a)
+
+# model.predict("hello world")

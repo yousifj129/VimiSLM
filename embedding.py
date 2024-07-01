@@ -43,7 +43,7 @@ class GloVeEmbedding:
         return np.array(embeddings)
 
     def get_word_from_embedding(self, embedding, top_n=1):
-        distances = cdist(embedding[np.newaxis, :], self.word_vectors, metric='cosine')
+        distances = cdist(embedding[np.newaxis, :], self.word_vectors, metric='euclidean')
         indices = np.argsort(distances)
         words = [self.get_words()[i] for i in indices[:, :top_n].flatten()]
 
